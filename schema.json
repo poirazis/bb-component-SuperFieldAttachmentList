@@ -2,15 +2,228 @@
   "type": "component",
   "metadata": {},
   "schema": {
-    "name": "bb-component-SuperFieldAttachment",
-    "friendlyName": "bb-component-SuperFieldAttachment",
-    "description": "bb-component-SuperFieldAttachment",
-    "icon": "Text",
+    "name": "bb-component-SuperFieldAttachmentList",
+    "friendlyName": "Super Field - Attachment List",
+    "description": "A multi Attachment Field component for Budibase",
+    "icon": "ABC",
+    "requiredAncestors": ["form"],
+    "block": true,
+    "ejectable": false,
+    "context": [
+      {
+        "type": "static",
+        "values": [
+          {
+            "label": "Value",
+            "key": "value",
+            "type": "string"
+          }
+        ]
+      }
+    ],
     "settings": [
       {
+        "type": "field/attachment",
+        "label": "Field",
+        "key": "field",
+        "required": true
+      },
+      {
         "type": "text",
-        "key": "text",
-        "label": "Text"
+        "label": "Label",
+        "key": "label"
+      },
+      {
+        "type": "text",
+        "label": "Placeholder",
+        "key": "placeholder"
+      },
+      {
+        "type": "text",
+        "label": "Default value",
+        "key": "defaultValue",
+        "supportsConditions": false
+      },
+      {
+        "type": "text",
+        "label": "Formatted value",
+        "key": "template",
+        "placeholder": "{{ Value }}",
+        "supportsConditions": false,
+        "nested": true
+      },
+      {
+        "type": "text",
+        "label": "Help text",
+        "key": "helpText"
+      },
+      {
+        "type": "text",
+        "label": "Input Mask",
+        "key": "mask",
+        "hidden": true
+      },
+      {
+        "type": "validation/string",
+        "label": "Validation",
+        "key": "validation"
+      },
+      {
+        "type": "event",
+        "label": "On change",
+        "key": "onChange",
+        "context": [
+          {
+            "label": "Field Value",
+            "key": "value"
+          }
+        ]
+      },
+      {
+        "type": "boolean",
+        "label": "Grab Focus",
+        "key": "autofocus",
+        "defaultValue": false
+      },
+      {
+        "type": "boolean",
+        "label": "Debounced",
+        "key": "debounced",
+        "defaultValue": false
+      },
+      {
+        "type": "boolean",
+        "label": "Suggestions",
+        "key": "showSuggestions",
+        "hidden": true,
+        "defaultValue": false
+      },
+      {
+        "type": "number",
+        "label": "Debounce Delay (ms)",
+        "key": "debounceDelay",
+        "minValue": "200",
+        "defaultValue": 750,
+        "dependsOn": "debounced"
+      },
+      {
+        "type": "boolean",
+        "label": "Disabled",
+        "key": "disabled",
+        "defaultValue": false
+      },
+      {
+        "type": "boolean",
+        "label": "Read only",
+        "key": "readonly",
+        "defaultValue": false,
+        "dependsOn": {
+          "setting": "disabled",
+          "value": true,
+          "invert": true
+        }
+      },
+      {
+        "type": "boolean",
+        "key": "clearValueIcon",
+        "label": "Clear Value Icon"
+      },
+      {
+        "type": "boolean",
+        "key": "showIcon",
+        "label": "Add Inline Icon"
+      },
+      {
+        "type": "icon",
+        "key": "icon",
+        "label": "Icon",
+        "resetOn": "showIcon",
+        "dependsOn": "showIcon"
+      },
+      {
+        "type": "boolean",
+        "key": "customButtons",
+        "label": "Add Buttons"
+      },
+      {
+        "type": "buttonConfiguration",
+        "key": "buttons",
+        "nested": true,
+        "dependsOn": "customButtons"
+      },
+      {
+        "tag": "style",
+        "type": "select",
+        "key": "role",
+        "label": "Field Mode",
+        "defaultValue": "formInput",
+        "options": [
+          { "label": "Form Input", "value": "formInput" },
+          { "label": "Inline Input", "value": "inlineInput" }
+        ]
+      },
+      {
+        "tag": "style",
+        "type": "select",
+        "label": "Label Position",
+        "key": "labelPosition",
+        "showInBar": true,
+        "barStyle": "buttons",
+        "options": [
+          {
+            "label": "Auto",
+            "value": false,
+            "barIcon": "Group",
+            "barTitle": "Field Group"
+          },
+          {
+            "label": "Above",
+            "value": "above",
+            "barIcon": "MarginTop",
+            "barTitle": "Above"
+          },
+          {
+            "label": "Left",
+            "value": "left",
+            "barIcon": "MarginLeft",
+            "barTitle": "Left"
+          }
+        ]
+      },
+      {
+        "tag": "style",
+        "type": "select",
+        "label": "Layout",
+        "key": "span",
+        "defaultValue": 6,
+        "showInBar": true,
+        "barStyle": "buttons",
+        "options": [
+          {
+            "label": "3 columns",
+            "value": 2,
+            "barIcon": "ViewColumn",
+            "barTitle": "3 columns"
+          },
+          {
+            "label": "2 columns",
+            "value": 3,
+            "barIcon": "ColumnTwoA",
+            "barTitle": "2 columns"
+          },
+          {
+            "label": "1 column",
+            "value": 6,
+            "barIcon": "Stop",
+            "barTitle": "1 column"
+          },
+          {
+            "label": "Full Width",
+            "value": 12,
+            "barIcon": "Maximize",
+            "barTitle": "Full Width"
+          }
+        ]
       }
     ]
   }
