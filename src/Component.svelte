@@ -56,7 +56,7 @@
 
   $: formField = formApi?.registerField(
     field,
-    "string",
+    "attachment",
     defaultValue,
     disabled,
     readonly,
