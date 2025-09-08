@@ -1,6 +1,6 @@
 {
   "name": "bb-component-SuperFieldAttachmentList",
-  "version": "1.0.0-alpha",
+  "version": "1.0.0",
   "description": "An attachment component for Budibase",
   "license": "MIT",
   "author": "Michael Poirazi",
