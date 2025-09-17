@@ -1,6 +1,6 @@
 {
   "name": "bb-component-SuperFieldAttachmentList",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "An attachment component for Budibase",
   "license": "MIT",
   "author": "Michael Poirazi",
@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@crownframework/svelte-error-boundary": "^1.0.3",
-    "@poirazis/supercomponents-shared": "latest"
+    "@poirazis/supercomponents-shared": "^1.0.37"
   },
   "devDependencies": {
     "@budibase/backend-core": "^2.33.14",
