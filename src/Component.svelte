@@ -1,47 +1,43 @@
 <script>
   import { getContext, onDestroy } from "svelte";
-  import CellAttachment from "../../bb_super_components_shared/src/lib/SuperTableCells/CellAttachment.svelte";
-  import SuperButton from "../../bb_super_components_shared/src/lib/SuperButton/SuperButton.svelte";
-  import "../../bb_super_components_shared/src/lib/SuperFieldsCommon.css";
+  import {
+    CellAttachment,
+    CellAttachmentExpanded,
+    SuperField,
+  } from "@poirazis/supercomponents-shared";
 
-  const { styleable, enrichButtonActions } = getContext("sdk");
+  const { styleable, builderStore, Provider, API } = getContext("sdk");
   const component = getContext("component");
-  const allContext = getContext("context");
 
   const formContext = getContext("form");
   const formStepContext = getContext("form-step");
   const groupLabelPosition = getContext("field-group");
   const labelWidth = getContext("field-group-label-width");
+  const groupColumns = getContext("field-group-columns");
   const groupDisabled = getContext("field-group-disabled");
   const formApi = formContext?.formApi;
 
   export let field;
-
-  export let customButtons;
-
-  export let buttons = [];
-  export let buttonsQuiet;
+  export let controlType = "select";
+  export let imageRatio = "landscape";
+  export let gridColumns = 4;
 
   export let label;
   export let span = 6;
   export let placeholder;
-  export let defaultValue;
-  export let template;
   export let disabled;
   export let readonly;
   export let validation;
+  export let defaultValue;
 
   export let onChange;
-  export let debounced;
-  export let debounceDelay;
   export let autofocus;
 
   export let icon;
-  export let suggestions;
-  export let clearValueIcon;
 
   export let role;
-  export let labelPosition;
+  export let labelPosition = "fieldGroup";
+  export let helpText;
 
   let formField;
   let formStep;
@@ -49,14 +45,16 @@
   let fieldApi;
   let fieldSchema;
   let value;
-  let cellState;
 
   $: formStep = formStepContext ? $formStepContext || 1 : 1;
-  $: labelPos = labelPosition ? labelPosition : groupLabelPosition || "left";
+  $: labelPos =
+    groupLabelPosition && labelPosition == "fieldGroup"
+      ? groupLabelPosition
+      : labelPosition;
 
   $: formField = formApi?.registerField(
     field,
-    "string",
+    "attachment",
     defaultValue,
     disabled,
     readonly,
@@ -71,18 +69,17 @@
   });
 
   $: value = fieldState?.value ? fieldState.value : defaultValue;
+  $: error = fieldState?.error;
   $: cellOptions = {
     placeholder,
-    defaultValue,
     disabled: disabled || groupDisabled || fieldState?.disabled,
-    template,
-    suggestions,
     padding: "0.5rem",
     readonly: readonly || fieldState?.readonly,
     icon,
-    debounce: debounced ? debounceDelay : false,
-    clearValueIcon,
-    error: fieldState.error,
+    controlType,
+    imageRatio,
+    gridColumns,
+    error: fieldState?.error,
     role,
   };
 
@@ -90,12 +87,11 @@
     ...$component.styles,
     normal: {
       ...$component.styles.normal,
-      "flex-direction": labelPos == "left" ? "row" : "column",
-      "align-items": "stretch",
-      gap: labelPos == "left" ? "0.5rem" : "0rem",
-      "grid-column": labelPos ? "span " + span : "span 1",
-      "--label-width":
-        labelPos == "left" ? (labelWidth ? labelWidth : "6rem") : "auto",
+      "max-height": $component.styles.normal.height
+        ? $component.styles.normal.height
+        : "15rem",
+      overflow: "hidden",
+      "grid-column": groupColumns ? `span ${span}` : "span 1",
     },
   };
 
@@ -113,49 +109,37 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-<div class="superField" use:styleable={$component.styles}>
-  {#if label}
-    <label
-      for="superCell"
-      class="superlabel"
-      class:left={labelPos == "left"}
-      on:mousedown|preventDefault={cellState.focus}
-    >
-      {label}
-      {#if fieldState.error}
-        <div class="error" class:left={labelPos == "left"}>
-          <span>{fieldState.error}</span>
-        </div>
-      {/if}
-    </label>
-  {/if}
-
-  <div class="inline-cells">
-    <CellAttachment
-      bind:cellState
-      {cellOptions}
-      {value}
-      {fieldSchema}
-      {autofocus}
-      on:change={(e) => handleChange(e.detail)}
-    />
-    {#if customButtons && buttons?.length}
-      <div
-        class="spectrum-ActionGroup spectrum-ActionGroup--compact spectrum-ActionGroup--sizeM"
-        class:spectrum-ActionGroup--quiet={buttonsQuiet}
-      >
-        {#each buttons as { text, onClick, quiet, disabled, type }}
-          <SuperButton
-            quiet={buttonsQuiet || quiet}
-            {disabled}
-            size="M"
-            {text}
-            onClick={enrichButtonActions(onClick, $allContext)}
-            emphasized
-            selected={type == "cta"}
-          />
-        {/each}
-      </div>
+<div use:styleable={$component.styles}>
+  <Provider data={{ value }} />
+  <SuperField
+    multirow={controlType != "select"}
+    {labelPos}
+    {labelWidth}
+    {field}
+    {label}
+    {error}
+    {helpText}
+  >
+    {#if controlType == "select"}
+      <CellAttachment
+        {cellOptions}
+        {value}
+        {fieldSchema}
+        {autofocus}
+        {API}
+        tableid={formContext?.dataSource?.tableId}
+        on:change={(e) => handleChange(e.detail)}
+      />
+    {:else}
+      <CellAttachmentExpanded
+        {cellOptions}
+        {value}
+        {fieldSchema}
+        {autofocus}
+        {API}
+        tableid={formContext?.dataSource?.tableId}
+        on:change={(e) => handleChange(e.detail)}
+      />
     {/if}
-  </div>
+  </SuperField>
 </div>
