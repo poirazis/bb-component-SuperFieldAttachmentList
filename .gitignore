@@ -105,5 +105,4 @@ dist
 
 .idea/
 
-# Lock files for other package managers
 package-lock.json
