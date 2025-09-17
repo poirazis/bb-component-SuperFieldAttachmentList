@@ -2,13 +2,12 @@
   import { getContext, onDestroy } from "svelte";
   import {
     CellAttachment,
-    SuperButton,
+    CellAttachmentExpanded,
     SuperField,
   } from "@poirazis/supercomponents-shared";
 
-  const { styleable, enrichButtonActions, builderStore } = getContext("sdk");
+  const { styleable, builderStore, Provider, API } = getContext("sdk");
   const component = getContext("component");
-  const allContext = getContext("context");
 
   const formContext = getContext("form");
   const formStepContext = getContext("form-step");
@@ -19,26 +18,22 @@
   const formApi = formContext?.formApi;
 
   export let field;
-  export let buttons = [];
+  export let controlType = "select";
+  export let imageRatio = "landscape";
+  export let gridColumns = 4;
 
   export let label;
   export let span = 6;
   export let placeholder;
-  export let defaultValue;
-  export let template;
   export let disabled;
   export let readonly;
   export let validation;
-  export let invisible = false;
+  export let defaultValue;
 
   export let onChange;
-  export let debounced;
-  export let debounceDelay;
   export let autofocus;
 
   export let icon;
-  export let suggestions;
-  export let clearValueIcon;
 
   export let role;
   export let labelPosition = "fieldGroup";
@@ -77,15 +72,13 @@
   $: error = fieldState?.error;
   $: cellOptions = {
     placeholder,
-    defaultValue,
     disabled: disabled || groupDisabled || fieldState?.disabled,
-    template,
-    suggestions,
     padding: "0.5rem",
     readonly: readonly || fieldState?.readonly,
     icon,
-    debounce: debounced ? debounceDelay : false,
-    clearValueIcon,
+    controlType,
+    imageRatio,
+    gridColumns,
     error: fieldState?.error,
     role,
   };
@@ -94,11 +87,10 @@
     ...$component.styles,
     normal: {
       ...$component.styles.normal,
-      display:
-        invisible && !$builderStore.inBuilder
-          ? "none"
-          : $component.styles.normal.display,
-      opacity: invisible && $builderStore.inBuilder ? 0.6 : 1,
+      "max-height": $component.styles.normal.height
+        ? $component.styles.normal.height
+        : "15rem",
+      overflow: "hidden",
       "grid-column": groupColumns ? `span ${span}` : "span 1",
     },
   };
@@ -118,28 +110,36 @@
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 <div use:styleable={$component.styles}>
-  <SuperField {labelPos} {labelWidth} {field} {label} {error} {helpText}>
-    <CellAttachment
-      {cellOptions}
-      {value}
-      {fieldSchema}
-      {autofocus}
-      on:change={(e) => handleChange(e.detail)}
-    />
-    {#if buttons?.length}
-      <div class="inline-buttons">
-        {#each buttons as { text, onClick, icon, size, quiet, type }}
-          <SuperButton
-            {icon}
-            {size}
-            {disabled}
-            {text}
-            {quiet}
-            {type}
-            onClick={enrichButtonActions(onClick, $allContext)}
-          />
-        {/each}
-      </div>
+  <Provider data={{ value }} />
+  <SuperField
+    multirow={controlType != "select"}
+    {labelPos}
+    {labelWidth}
+    {field}
+    {label}
+    {error}
+    {helpText}
+  >
+    {#if controlType == "select"}
+      <CellAttachment
+        {cellOptions}
+        {value}
+        {fieldSchema}
+        {autofocus}
+        {API}
+        tableid={formContext?.dataSource?.tableId}
+        on:change={(e) => handleChange(e.detail)}
+      />
+    {:else}
+      <CellAttachmentExpanded
+        {cellOptions}
+        {value}
+        {fieldSchema}
+        {autofocus}
+        {API}
+        tableid={formContext?.dataSource?.tableId}
+        on:change={(e) => handleChange(e.detail)}
+      />
     {/if}
   </SuperField>
 </div>
