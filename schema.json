@@ -56,7 +56,8 @@
           { "label": "Select", "value": "select" },
           { "label": "File List", "value": "list" },
           { "label": "Grid", "value": "grid" },
-          { "label": "Carousel", "value": "carousel" }
+          { "label": "Carousel", "value": "carousel" },
+          { "label": "Slider", "value": "slider" }
         ]
       },
       {
@@ -134,6 +135,45 @@
         "key": "buttons",
         "nested": true,
         "dependsOn": "customButtons"
+      },
+      {
+        "section": true,
+        "name": "Slider Settings",
+        "collapsed": true,
+        "dependsOn": {
+          "setting": "controlType",
+          "value": "slider"
+        },
+        "settings": [
+          {
+            "type": "number",
+            "label": "Slides to show",
+            "key": "carouselItemsToShow",
+            "defaultValue": 3,
+            "min": 1,
+            "max": 12
+          },
+          {
+            "type": "number",
+            "label": "Slides to scroll",
+            "key": "carouselItemsToScroll",
+            "defaultValue": 1,
+            "min": 1,
+            "max": 12
+          },
+          {
+            "type": "boolean",
+            "label": "Nav Arrows",
+            "key": "carouselArrows",
+            "defaultValue": true
+          },
+          {
+            "type": "boolean",
+            "label": "Position dots",
+            "key": "carouselDots",
+            "defaultValue": false
+          }
+        ]
       },
       {
         "section": true,

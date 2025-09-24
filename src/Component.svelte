@@ -3,6 +3,7 @@
   import {
     CellAttachment,
     CellAttachmentExpanded,
+    CellAttachmentSlider,
     SuperField,
   } from "@poirazis/supercomponents-shared";
 
@@ -38,6 +39,14 @@
   export let role;
   export let labelPosition = "fieldGroup";
   export let helpText;
+
+  // Slider Speccific Settings
+  export let carouselDots = false;
+  export let infinite = false;
+  export let speed = 500;
+  export let carouselItemsToShow = 1;
+  export let carouselItemsToScroll = 1;
+  export let carouselArrows = true;
 
   let formField;
   let formStep;
@@ -81,19 +90,27 @@
     gridColumns,
     error: fieldState?.error,
     role,
+    ...(controlType === "slider" && {
+      carouselArrows,
+      carouselDots,
+      carouselItemsToShow,
+      carouselItemsToScroll,
+    }),
   };
+
+  $: inBuilder = $builderStore?.inBuilder;
 
   $: $component.styles = {
     ...$component.styles,
     normal: {
       ...$component.styles.normal,
-      "max-height": $component.styles.normal.height
-        ? $component.styles.normal.height
-        : "15rem",
       overflow: "hidden",
       "grid-column": groupColumns ? `span ${span}` : "span 1",
+      "grid-row": controlType != "select" ? "span 4" : "span 1",
     },
   };
+
+  $: height = $component.styles.normal.height || "13rem";
 
   const handleChange = (newValue) => {
     onChange?.({ value: newValue });
@@ -113,6 +130,7 @@
   <Provider data={{ value }} />
   <SuperField
     multirow={controlType != "select"}
+    tall={controlType != "select"}
     {labelPos}
     {labelWidth}
     {field}
@@ -127,6 +145,19 @@
         {fieldSchema}
         {autofocus}
         {API}
+        {inBuilder}
+        tableid={formContext?.dataSource?.tableId}
+        on:change={(e) => handleChange(e.detail)}
+      />
+    {:else if controlType == "slider"}
+      <CellAttachmentSlider
+        {cellOptions}
+        {value}
+        {fieldSchema}
+        {autofocus}
+        {API}
+        {inBuilder}
+        {height}
         tableid={formContext?.dataSource?.tableId}
         on:change={(e) => handleChange(e.detail)}
       />
@@ -137,6 +168,7 @@
         {fieldSchema}
         {autofocus}
         {API}
+        {inBuilder}
         tableid={formContext?.dataSource?.tableId}
         on:change={(e) => handleChange(e.detail)}
       />
