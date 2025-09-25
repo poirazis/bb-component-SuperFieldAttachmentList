@@ -31,6 +31,7 @@
   export let validation;
   export let defaultValue;
 
+  export let onClickAction = "view"; // view | download | custom
   export let onChange;
   export let autofocus;
 
@@ -88,6 +89,7 @@
     controlType,
     imageRatio,
     gridColumns,
+    onClickAction,
     error: fieldState?.error,
     role,
     ...(controlType === "slider" && {
@@ -110,8 +112,6 @@
     },
   };
 
-  $: height = $component.styles.normal.height || "13rem";
-
   const handleChange = (newValue) => {
     onChange?.({ value: newValue });
     fieldApi?.setValue(newValue);
@@ -131,6 +131,7 @@
   <SuperField
     multirow={controlType != "select"}
     tall={controlType != "select"}
+    height={$component.styles.normal?.height}
     {labelPos}
     {labelWidth}
     {field}

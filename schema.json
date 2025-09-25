@@ -88,7 +88,22 @@
           { "label": "Original", "value": "original" }
         ]
       },
-
+      {
+        "type": "select",
+        "key": "onClickAction",
+        "label": "On Click",
+        "defaultValue": "view",
+        "dependsOn": {
+          "setting": "controlType",
+          "value": ["grid", "carousel", "slider"]
+        },
+        "options": [
+          { "label": "None", "value": "none" },
+          { "label": "View", "value": "view" },
+          { "label": "Select", "value": "select" },
+          { "label": "Custom", "value": "custom" }
+        ]
+      },
       {
         "type": "boolean",
         "label": "Grab Focus",
@@ -149,7 +164,7 @@
             "type": "number",
             "label": "Slides to show",
             "key": "carouselItemsToShow",
-            "defaultValue": 3,
+            "defaultValue": 1,
             "min": 1,
             "max": 12
           },
