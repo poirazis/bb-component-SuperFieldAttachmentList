@@ -121,6 +121,8 @@
     fieldApi?.deregister();
     unsubscribe?.();
   });
+
+  // All console.log statements have been removed for production readiness.
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
