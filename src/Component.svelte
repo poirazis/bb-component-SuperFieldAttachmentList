@@ -105,6 +105,7 @@
   $: $component.styles = {
     ...$component.styles,
     normal: {
+      height: controlType != "select" ? "15rem" : "auto",
       ...$component.styles.normal,
       overflow: "hidden",
       "grid-column": groupColumns ? `span ${span}` : "span 1",
@@ -121,8 +122,6 @@
     fieldApi?.deregister();
     unsubscribe?.();
   });
-
-  // All console.log statements have been removed for production readiness.
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -131,9 +130,8 @@
 <div use:styleable={$component.styles}>
   <Provider data={{ value }} />
   <SuperField
-    multirow={controlType != "select"}
     tall={controlType != "select"}
-    height={$component.styles.normal?.height}
+    height={$component.styles.normal?.height || "15rem"}
     {labelPos}
     {labelWidth}
     {field}
@@ -160,7 +158,6 @@
         {autofocus}
         {API}
         {inBuilder}
-        {height}
         tableid={formContext?.dataSource?.tableId}
         on:change={(e) => handleChange(e.detail)}
       />
