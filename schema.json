@@ -127,30 +127,6 @@
           "invert": true
         }
       },
-
-      {
-        "type": "boolean",
-        "key": "showIcon",
-        "label": "Add Inline Icon"
-      },
-      {
-        "type": "icon",
-        "key": "icon",
-        "label": "Icon",
-        "resetOn": "showIcon",
-        "dependsOn": "showIcon"
-      },
-      {
-        "type": "boolean",
-        "key": "customButtons",
-        "label": "Add Buttons"
-      },
-      {
-        "type": "buttonConfiguration",
-        "key": "buttons",
-        "nested": true,
-        "dependsOn": "customButtons"
-      },
       {
         "section": true,
         "name": "Slider Settings",
