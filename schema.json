@@ -187,17 +187,6 @@
       {
         "tag": "style",
         "type": "select",
-        "key": "role",
-        "label": "Field Mode",
-        "defaultValue": "formInput",
-        "options": [
-          { "label": "Form Input", "value": "formInput" },
-          { "label": "Inline Input", "value": "inlineInput" }
-        ]
-      },
-      {
-        "tag": "style",
-        "type": "select",
         "label": "Label Position",
         "key": "labelPosition",
         "showInBar": true,
@@ -225,11 +214,29 @@
       },
       {
         "tag": "style",
+        "type": "select",
+        "key": "role",
+        "label": "Field Mode",
+        "defaultValue": "formInput",
+        "options": [
+          { "label": "Form Input", "value": "formInput" },
+          { "label": "Inline Input", "value": "inlineInput" }
+        ]
+      },
+      {
+        "tag": "style",
         "type": "number",
         "label": "Size",
         "key": "span",
         "defaultValue": 6,
         "min": 2
+      },
+      {
+        "tag": "style",
+        "type": "boolean",
+        "key": "invisible",
+        "label": "Invisible",
+        "defaultValue": false
       }
     ]
   }
