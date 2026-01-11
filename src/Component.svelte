@@ -43,8 +43,6 @@
 
   // Slider Speccific Settings
   export let carouselDots = false;
-  export let infinite = false;
-  export let speed = 500;
   export let carouselItemsToShow = 1;
   export let carouselItemsToScroll = 1;
   export let carouselArrows = true;
