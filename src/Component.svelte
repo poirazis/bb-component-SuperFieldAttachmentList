@@ -3,6 +3,7 @@
   import {
     CellAttachment,
     CellAttachmentExpanded,
+    CellAttachmentSlider,
     SuperField,
   } from "@poirazis/supercomponents-shared";
 
@@ -30,6 +31,7 @@
   export let validation;
   export let defaultValue;
 
+  export let onClickAction = "view"; // view | download | custom
   export let onChange;
   export let autofocus;
 
@@ -38,6 +40,12 @@
   export let role;
   export let labelPosition = "fieldGroup";
   export let helpText;
+
+  // Slider Speccific Settings
+  export let carouselDots = false;
+  export let carouselItemsToShow = 1;
+  export let carouselItemsToScroll = 1;
+  export let carouselArrows = true;
 
   let formField;
   let formStep;
@@ -48,7 +56,7 @@
 
   $: formStep = formStepContext ? $formStepContext || 1 : 1;
   $: labelPos =
-    groupLabelPosition && labelPosition == "fieldGroup"
+    groupLabelPosition !== undefined && labelPosition == "fieldGroup"
       ? groupLabelPosition
       : labelPosition;
 
@@ -79,19 +87,27 @@
     controlType,
     imageRatio,
     gridColumns,
+    onClickAction,
     error: fieldState?.error,
     role,
+    ...(controlType === "slider" && {
+      carouselArrows,
+      carouselDots,
+      carouselItemsToShow,
+      carouselItemsToScroll,
+    }),
   };
+
+  $: inBuilder = $builderStore?.inBuilder;
 
   $: $component.styles = {
     ...$component.styles,
     normal: {
+      height: controlType != "select" ? "15rem" : "auto",
       ...$component.styles.normal,
-      "max-height": $component.styles.normal.height
-        ? $component.styles.normal.height
-        : "15rem",
       overflow: "hidden",
       "grid-column": groupColumns ? `span ${span}` : "span 1",
+      "grid-row": controlType != "select" ? "span 4" : "span 1",
     },
   };
 
@@ -112,7 +128,8 @@
 <div use:styleable={$component.styles}>
   <Provider data={{ value }} />
   <SuperField
-    multirow={controlType != "select"}
+    tall={controlType != "select"}
+    height={$component.styles.normal?.height || "15rem"}
     {labelPos}
     {labelWidth}
     {field}
@@ -127,6 +144,18 @@
         {fieldSchema}
         {autofocus}
         {API}
+        {inBuilder}
+        tableid={formContext?.dataSource?.tableId}
+        on:change={(e) => handleChange(e.detail)}
+      />
+    {:else if controlType == "slider"}
+      <CellAttachmentSlider
+        {cellOptions}
+        {value}
+        {fieldSchema}
+        {autofocus}
+        {API}
+        {inBuilder}
         tableid={formContext?.dataSource?.tableId}
         on:change={(e) => handleChange(e.detail)}
       />
@@ -137,6 +166,7 @@
         {fieldSchema}
         {autofocus}
         {API}
+        {inBuilder}
         tableid={formContext?.dataSource?.tableId}
         on:change={(e) => handleChange(e.detail)}
       />

@@ -1,13 +1,19 @@
 {
   "type": "component",
-  "metadata": {},
+  "metadata": {
+    "svelteMajor": 5
+  },
   "schema": {
     "name": "bb-component-SuperFieldAttachmentList",
     "friendlyName": "Super Field - Attachment List",
     "description": "A multi Attachment Field component for Budibase",
-    "styles": ["size"],
+    "styles": [
+      "size"
+    ],
     "icon": "Link",
-    "requiredAncestors": ["form"],
+    "requiredAncestors": [
+      "form"
+    ],
     "context": [
       {
         "type": "static",
@@ -53,10 +59,26 @@
         "key": "controlType",
         "defaultValue": "select",
         "options": [
-          { "label": "Select", "value": "select" },
-          { "label": "File List", "value": "list" },
-          { "label": "Grid", "value": "grid" },
-          { "label": "Carousel", "value": "carousel" }
+          {
+            "label": "Select",
+            "value": "select"
+          },
+          {
+            "label": "File List",
+            "value": "list"
+          },
+          {
+            "label": "Grid",
+            "value": "grid"
+          },
+          {
+            "label": "Carousel",
+            "value": "carousel"
+          },
+          {
+            "label": "Slider",
+            "value": "slider"
+          }
         ]
       },
       {
@@ -68,7 +90,9 @@
         "max": 12,
         "dependsOn": {
           "setting": "controlType",
-          "value": ["grid"]
+          "value": [
+            "grid"
+          ]
         }
       },
       {
@@ -78,16 +102,63 @@
         "defaultValue": "landscape",
         "dependsOn": {
           "setting": "controlType",
-          "value": ["grid", "masonry", "gallery"]
+          "value": [
+            "grid",
+            "masonry",
+            "gallery"
+          ]
         },
         "options": [
-          { "label": "Landscape", "value": "landscape" },
-          { "label": "Square", "value": "square" },
-          { "label": "Portrait", "value": "portrait" },
-          { "label": "Original", "value": "original" }
+          {
+            "label": "Landscape",
+            "value": "landscape"
+          },
+          {
+            "label": "Square",
+            "value": "square"
+          },
+          {
+            "label": "Portrait",
+            "value": "portrait"
+          },
+          {
+            "label": "Original",
+            "value": "original"
+          }
         ]
       },
-
+      {
+        "type": "select",
+        "key": "onClickAction",
+        "label": "On Click",
+        "defaultValue": "view",
+        "dependsOn": {
+          "setting": "controlType",
+          "value": [
+            "grid",
+            "carousel",
+            "slider"
+          ]
+        },
+        "options": [
+          {
+            "label": "None",
+            "value": "none"
+          },
+          {
+            "label": "View",
+            "value": "view"
+          },
+          {
+            "label": "Select",
+            "value": "select"
+          },
+          {
+            "label": "Custom",
+            "value": "custom"
+          }
+        ]
+      },
       {
         "type": "boolean",
         "label": "Grab Focus",
@@ -111,29 +182,44 @@
           "invert": true
         }
       },
-
       {
-        "type": "boolean",
-        "key": "showIcon",
-        "label": "Add Inline Icon"
-      },
-      {
-        "type": "icon",
-        "key": "icon",
-        "label": "Icon",
-        "resetOn": "showIcon",
-        "dependsOn": "showIcon"
-      },
-      {
-        "type": "boolean",
-        "key": "customButtons",
-        "label": "Add Buttons"
-      },
-      {
-        "type": "buttonConfiguration",
-        "key": "buttons",
-        "nested": true,
-        "dependsOn": "customButtons"
+        "section": true,
+        "name": "Slider Settings",
+        "collapsed": true,
+        "dependsOn": {
+          "setting": "controlType",
+          "value": "slider"
+        },
+        "settings": [
+          {
+            "type": "number",
+            "label": "Slides to show",
+            "key": "carouselItemsToShow",
+            "defaultValue": 1,
+            "min": 1,
+            "max": 12
+          },
+          {
+            "type": "number",
+            "label": "Slides to scroll",
+            "key": "carouselItemsToScroll",
+            "defaultValue": 1,
+            "min": 1,
+            "max": 12
+          },
+          {
+            "type": "boolean",
+            "label": "Nav Arrows",
+            "key": "carouselArrows",
+            "defaultValue": true
+          },
+          {
+            "type": "boolean",
+            "label": "Position dots",
+            "key": "carouselDots",
+            "defaultValue": false
+          }
+        ]
       },
       {
         "section": true,
@@ -151,17 +237,6 @@
               }
             ]
           }
-        ]
-      },
-      {
-        "tag": "style",
-        "type": "select",
-        "key": "role",
-        "label": "Field Mode",
-        "defaultValue": "formInput",
-        "options": [
-          { "label": "Form Input", "value": "formInput" },
-          { "label": "Inline Input", "value": "inlineInput" }
         ]
       },
       {
@@ -194,11 +269,35 @@
       },
       {
         "tag": "style",
+        "type": "select",
+        "key": "role",
+        "label": "Field Mode",
+        "defaultValue": "formInput",
+        "options": [
+          {
+            "label": "Form Input",
+            "value": "formInput"
+          },
+          {
+            "label": "Inline Input",
+            "value": "inlineInput"
+          }
+        ]
+      },
+      {
+        "tag": "style",
         "type": "number",
         "label": "Size",
         "key": "span",
         "defaultValue": 6,
         "min": 2
+      },
+      {
+        "tag": "style",
+        "type": "boolean",
+        "key": "invisible",
+        "label": "Invisible",
+        "defaultValue": false
       }
     ]
   }
